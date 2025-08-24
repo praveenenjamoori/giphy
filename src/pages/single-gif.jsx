@@ -36,12 +36,45 @@ const GifPage = () => {
     fetchGif();
   }, []);
 
-  const shareGif = () => {
-    // Assignment
+  const shareGif = async () => {
+    const gifUrl = gif?.images?.original?.url;
+    if (!gifUrl) return;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: gif.title || 'GIF',
+          text: 'Check out this GIF!',
+          url: gifUrl,
+        });
+      } catch (err) {
+        // User cancelled or sharing failed
+      }
+    } else {
+      // Fallback: copy link to clipboard
+      try {
+        await navigator.clipboard.writeText(gifUrl);
+        alert('GIF link copied to clipboard!');
+      } catch (err) {
+        alert('Could not copy GIF link.');
+      }
+    }
   };
 
-  const EmbedGif = () => {
-    // Assignment
+  const DownloadGif = () => {
+    if (!gif?.images?.original?.url) return;
+    fetch(gif.images.original.url)
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${gif.title || 'giphy-gif'}.gif`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      });
   };
 
   return (
@@ -143,18 +176,18 @@ const GifPage = () => {
               Favorite
             </button>
             <button
-              onClick={shareGif} // Assignment
+              onClick={shareGif} 
               className="flex gap-6 items-center font-bold text-lg"
             >
               <FaPaperPlane size={25} />
               Share
             </button>
             <button
-              onClick={EmbedGif} // Assignment
+              onClick={DownloadGif} 
               className="flex gap-5 items-center font-bold text-lg"
             >
               <IoCodeSharp size={30} />
-              Embed
+              Download
             </button>
           </div>
         </div>
