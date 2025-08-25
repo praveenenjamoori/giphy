@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {GifState} from "../context/gif-context";
 import Gif from "../components/gif";
+import FollowOn from "../components/follow-on";
 
 import {HiOutlineExternalLink} from "react-icons/hi";
 import {HiMiniChevronDown, HiMiniChevronUp, HiMiniHeart} from "react-icons/hi2";
@@ -115,7 +116,7 @@ const GifPage = () => {
             )}
           </>
         )}
-
+        <FollowOn />
         <div className="divider" />
 
         {gif?.source && (
