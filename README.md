@@ -14,3 +14,9 @@ npm install
 ```bash
 npm run dev
 ```
+
+
+### Create .env file for the API key
+```bash
+VITE_GIPHY_KEY=<YOUR_API>
+```
