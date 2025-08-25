@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {GifState} from "../context/gif-context";
 import {useParams} from "react-router-dom";
 import Gif from "../components/gif";
+import FollowOn from "../components/follow-on";
 
 const Category = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -27,6 +28,7 @@ const Category = () => {
         <span className="text-gray-400 text-sm pt-2">
           Don&apos;t tell it to me, GIF it to me!
         </span>
+        <FollowOn />
         <div className="w-full h-0.5 mt-6 bg-gray-800" />
       </div>
       <div>
