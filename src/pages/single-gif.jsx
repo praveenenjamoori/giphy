@@ -7,7 +7,7 @@ import FollowOn from "../components/follow-on";
 import {HiOutlineExternalLink} from "react-icons/hi";
 import {HiMiniChevronDown, HiMiniChevronUp, HiMiniHeart} from "react-icons/hi2";
 import {FaPaperPlane} from "react-icons/fa6";
-import {IoCodeSharp} from "react-icons/io5";
+import {HiArrowDownTray} from "react-icons/hi2";
 
 const contentType = ["gifs", "stickers", "texts"];
 
@@ -16,6 +16,8 @@ const GifPage = () => {
   const [gif, setGif] = useState({});
   const [relatedGifs, setRelatedGifs] = useState([]);
   const [readMore, setReadMore] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadComplete, setDownloadComplete] = useState(false);
 
   const {gf, addToFavorites, favorites} = GifState();
 
@@ -63,6 +65,10 @@ const GifPage = () => {
 
   const DownloadGif = () => {
     if (!gif?.images?.original?.url) return;
+    
+    setIsDownloading(true);
+    setDownloadComplete(false);
+    
     fetch(gif.images.original.url)
       .then(res => res.blob())
       .then(blob => {
@@ -74,6 +80,18 @@ const GifPage = () => {
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
+        
+        // Show download complete animation
+        setIsDownloading(false);
+        setDownloadComplete(true);
+        
+        // Reset after animation
+        setTimeout(() => {
+          setDownloadComplete(false);
+        }, 2000);
+      })
+      .catch(() => {
+        setIsDownloading(false);
       });
   };
 
@@ -183,10 +201,28 @@ const GifPage = () => {
             </button>
             <button
               onClick={DownloadGif} 
-              className="flex gap-5 items-center font-bold text-lg"
+              className={`flex gap-5 items-center font-bold text-lg transition-all duration-300 ${
+                isDownloading ? 'text-blue-400 animate-pulse' : 
+                downloadComplete ? 'text-green-400 download-success' : ''
+              }`}
+              disabled={isDownloading}
             >
-              <IoCodeSharp size={30} />
-              Download
+              <div className="relative">
+                <HiArrowDownTray 
+                  size={30} 
+                  className={`transition-all duration-300 ${
+                    isDownloading ? 'animate-bounce' : 
+                    downloadComplete ? 'text-green-400' : ''
+                  }`}
+                />
+                {downloadComplete && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+                )}
+                {isDownloading && (
+                  <div className="absolute inset-0 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                )}
+              </div>
+              {isDownloading ? 'Downloading...' : downloadComplete ? 'Downloaded!' : 'Download'}
             </button>
           </div>
         </div>
