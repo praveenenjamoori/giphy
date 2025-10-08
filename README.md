@@ -6,7 +6,6 @@ These instructions will get you a copy of the project up and running on your loc
 ### 🔧 Installation  
 ```bash
 git clone https://github.com/praveenenjamoori/giphy.git
-git clone https://github.com/Gbhanuteja22/giphy.git
 cd giphy
 npm install
 ```
