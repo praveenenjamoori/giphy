@@ -13,3 +13,46 @@
     @apply w-full h-0.5 my-6 bg-gray-800;
   }
 }
+
+@layer components {
+  .download-success {
+    animation: downloadSuccess 0.6s ease-in-out;
+  }
+  
+  .download-pulse {
+    animation: downloadPulse 1.5s infinite;
+  }
+}
+
+@keyframes downloadSuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    color: #10b981;
+  }
+  100% {
+    transform: scale(1);
+    color: #10b981;
+  }
+}
+
+@keyframes downloadPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Contributor card hover effects */
+.contributor-card {
+  transition: all 0.3s ease;
+}
+
+.contributor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
